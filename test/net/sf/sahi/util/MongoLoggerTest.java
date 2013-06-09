@@ -5,6 +5,9 @@ import net.sf.sahi.config.Configuration;
 import net.sf.sahi.request.HttpRequest;
 import net.sf.sahi.response.SimpleHttpResponse;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Sahi - Web Automation and Test Tool
  * 
@@ -30,7 +33,7 @@ public class MongoLoggerTest extends TestCase {
 		Configuration.init();
 	}
 
-    public void testSaveImageUrl(){
+    public void testSaveImageUrl() throws IOException {
         HttpRequest request = new HttpRequest();
         request.stripHostName("/login?service=http://www.hostname.com/landing", "www.hostname.com", false);
         String s = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><meta http-equiv=\"zxz\"/></head>";
@@ -38,6 +41,10 @@ public class MongoLoggerTest extends TestCase {
         response.setData("just for test".getBytes());
         response.setHeader("Content-Type", "image/jpeg");
         MongoLogger.storeImageUrl(request, response);
+    }
+
+    public void testGetImagePath() throws IOException {
+        MongoLogger.getImagePath("http://null");
     }
 
 }

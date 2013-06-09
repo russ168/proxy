@@ -47,14 +47,27 @@ public class MongoLogger {
 	private final String type;
 	private final boolean log;
 	private final Date time;
+    private String host = "localhost";
+    private int port = 27017;
+    private MongoClient mongoClient;
+    private DB db;
+    private DBCollection collection;
 
 	public MongoLogger(String reqFileName, String type, boolean log, final Date time) {
 		this.type = type;
 		this.log = log;
 		this.time = time;
 		if (log) init(reqFileName);
+        host = Configuration.getMongodbHost();
+        port = Configuration.getMongodbPort();
+        try {
+            mongoClient = new MongoClient(host, port);
+            db = mongoClient.getDB("test");
+            collection = db.getCollection("imgurls");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 	}
-
 
 	private void init(String reqFileName) {
 		this.reqFileName = FileUtils.cleanFileName(reqFileName);
@@ -120,7 +133,8 @@ public class MongoLogger {
          } else {
             final String fileName = "cache";
             Date time = new Date();
-           MongoLogger.createLoggerForThread(fileName, type, true, time);
+            //MongoLogger.createLoggerForThread(fileName, "image", Configuration.isImageLoggingOn(), time);
+            MongoLogger.createLoggerForThread(fileName, type, true, time);
            return (MongoLogger) ThreadLocalMap.get("mongoLogger_" + type);
         }
 	}
@@ -147,32 +161,30 @@ public class MongoLogger {
 	
 	public static String storeResponseBody(byte[] bytes, String type) {
 		final MongoLogger loggerForThread = getLoggerForThread(type);
-		 return  loggerForThread.storeResponseBody(bytes);
+		return  loggerForThread.storeResponseBody(bytes);
 	}
 
     public static void storeImageUrl(HttpRequest request, HttpResponse response) {
-            if(response.contentTypeHeader().equals("image/jpeg")) {
-                String uri = request.uri();
-                String url = request.url();
-                String file = MongoLogger.storeResponseBody(response.data(), "unmodified");
-                MongoClient mongoClient = null;
-                try {
-                    mongoClient = new MongoClient();
-                    DB db = mongoClient.getDB("test");
-                    DBCollection coll = db.getCollection("imgurls");
-                    BasicDBObject doc = new BasicDBObject()
-                            .append("url", url)
-                            .append("filepath", file);
-                    //coll.insert(doc);
-                    BasicDBObject q = new BasicDBObject()
-                            .append("url", url);
+        final MongoLogger loggerForThread = getLoggerForThread("imageUrl");
+        if(response.contentTypeHeader().equals("image/jpeg")) {
+            String uri = request.uri();
+            String url = request.url();
+            String file = MongoLogger.storeResponseBody(response.data(), "unmodified");
+            try {
 
-                    coll.update(q, doc, true, false);
-                    mongoClient.close();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                BasicDBObject doc = new BasicDBObject()
+                        .append("url", url)
+                        .append("filepath", file);
+                //coll.insert(doc);
+                BasicDBObject q = new BasicDBObject()
+                        .append("url", url);
+
+                loggerForThread.collection.update(q, doc, true, false);
+                //mongoClient.close();
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     /* abc abc */
-                }
+            }
         }
     }
 

@@ -9,17 +9,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib1" level="project" />
-    <orderEntry type="library" name="jars" level="project" />
-    <orderEntry type="library" name="ant-sahi" level="project" />
+    <orderEntry type="library" name="extlib" level="project" />
     <orderEntry type="library" name="sahi" level="project" />
-    <orderEntry type="library" name="js-1.6R1" level="project" />
-    <orderEntry type="library" name="httpcore-4.0-alpha6" level="project" />
-    <orderEntry type="library" name="httpclient-4.0-alpha4" level="project" />
-    <orderEntry type="library" name="httpmime-4.0-alpha4" level="project" />
-    <orderEntry type="library" name="google-api-client-1.4.1-beta" level="project" />
-    <orderEntry type="library" name="mongo-2.10.1" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="extlib1" level="project" />
+    <orderEntry type="library" name="js" level="project" />
   </component>
 </module>
 

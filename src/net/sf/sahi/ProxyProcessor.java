@@ -39,6 +39,7 @@ import net.sf.sahi.response.HttpFileResponse;
 import net.sf.sahi.response.HttpResponse;
 import net.sf.sahi.response.SimpleHttpResponse;
 import net.sf.sahi.ssl.SSLHelper;
+import net.sf.sahi.util.MongoLogger;
 import net.sf.sahi.util.ThreadLocalMap;
 import net.sf.sahi.util.TrafficLogger;
 import net.sf.sahi.util.Utils;

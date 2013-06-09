@@ -860,5 +860,17 @@ public class Configuration {
 		}
 	}
 
+    public static boolean isImageLoggingOn() {
+        return "true".equals(getUserProperty("debug.traffic.log.image"));
+    }
+
+    public static String getMongodbHost() {
+        return getUserProperty("db.mongodb.host", "localhost");
+    }
+
+    public static int getMongodbPort() {
+        return Integer.valueOf(getUserProperty("db.mongodb.port", "27017")).intValue();
+    }
+
 	// Pro start
 }

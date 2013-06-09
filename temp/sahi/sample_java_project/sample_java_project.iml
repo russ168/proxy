@@ -7,11 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="sahi" level="project" />
     <orderEntry type="library" name="extlib" level="project" />
+    <orderEntry type="library" name="sahi" level="project" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module" module-name="sahi" />
-    <orderEntry type="library" name="jars" level="project" />
   </component>
 </module>
 
