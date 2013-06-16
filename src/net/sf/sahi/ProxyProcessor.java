@@ -156,6 +156,8 @@ public class ProxyProcessor implements Runnable {
                 responseFromHost = new SimpleHttpResponse("");
             }
 //          System.out.println("Fetching >> :" + new String(requestFromBrowser.url()));
+            //MongoLogger.storeImageUrl(requestFromBrowser, responseFromHost);
+
             sendResponseToBrowser(responseFromHost);
         }
     }
@@ -208,7 +210,8 @@ public class ProxyProcessor implements Runnable {
     	HttpResponse httpResponse;
     	try {
     		httpResponse = new LocalRequestProcessor().getLocalResponse(uri, requestFromBrowser);
-    	} catch (Exception e) {
+            //MongoLogger.storeImageUrl(requestFromBrowser, httpResponse);
+        } catch (Exception e) {
     		Properties props = new Properties();
     		props.put("responseCode", "500");
     		props.put("time", "" + (new Date()));

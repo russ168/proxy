@@ -41,10 +41,7 @@ public class MongoLoggerTest extends TestCase {
         response.setData("just for test".getBytes());
         response.setHeader("Content-Type", "image/jpeg");
         MongoLogger.storeImageUrl(request, response);
+        String path = MongoLogger.getImagePath("http://null");
+        System.out.println("Cached image path is:" + path);
     }
-
-    public void testGetImagePath() throws IOException {
-        MongoLogger.getImagePath("http://null");
-    }
-
 }

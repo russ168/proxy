@@ -1,9 +1,6 @@
 package net.sf.sahi.util;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import net.sf.sahi.config.Configuration;
 import net.sf.sahi.request.HttpRequest;
 import net.sf.sahi.response.HttpResponse;
@@ -69,7 +66,7 @@ public class MongoLogger {
         }
 	}
 
-	private void init(String reqFileName) {
+   	private void init(String reqFileName) {
 		this.reqFileName = FileUtils.cleanFileName(reqFileName);
 		this.threadDir = getThreadDir();
 	}
@@ -166,10 +163,11 @@ public class MongoLogger {
 
     public static void storeImageUrl(HttpRequest request, HttpResponse response) {
         final MongoLogger loggerForThread = getLoggerForThread("imageUrl");
-        if(response.contentTypeHeader().equals("image/jpeg")) {
+        System.out.println("Response Content-Type is:" + response.contentTypeHeader());
+        if(response.contentTypeHeader().startsWith("image")) {
             String uri = request.uri();
             String url = request.url();
-            String file = MongoLogger.storeResponseBody(response.data(), "unmodified");
+            String file = MongoLogger.storeResponseBody(response.data(), "image");
             try {
 
                 BasicDBObject doc = new BasicDBObject()
@@ -188,4 +186,18 @@ public class MongoLogger {
         }
     }
 
+    public static String getImagePath(String imageUrl) {
+        final MongoLogger loggerForThread = getLoggerForThread("imageUrl");
+        BasicDBObject q = new BasicDBObject()
+                .append("url", imageUrl);
+        DBCursor cursor =  loggerForThread.collection.find(q);
+        if (cursor.hasNext()) {
+            DBObject result = cursor.next();
+            cursor.close();
+            return (String) result.get("filepath");
+        } else {
+            cursor.close();
+            return"";
+        }
+    }
 }

@@ -83,8 +83,9 @@ public class RemoteRequestProcessor {
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.setDefaultUseCaches(true);
 			connection.setUseCaches(true);
-			HttpURLConnection.setFollowRedirects(false);
-			if (logger.isLoggable(Level.FINEST)){
+
+            HttpURLConnection.setFollowRedirects(false);
+            if (logger.isLoggable(Level.FINEST)){
 				logger.finest("requestFromBrowser.headers():");
 				logger.finest(requestFromBrowser.headers().toString());
 			}
@@ -150,7 +151,7 @@ public class RemoteRequestProcessor {
 					TrafficLogger.storeResponseHeader(response.headers().toString().getBytes(), "unmodified");
 					TrafficLogger.storeResponseBody(response.data(), "unmodified");
                     MongoLogger.storeImageUrl(requestFromBrowser, response);
-				}
+                }
 				
 				if (requestFromBrowser.isAjax() && responseCode > 300 && responseCode < 308){
 					String redirectedTo = response.getLastSetValueOfHeader("Location");
